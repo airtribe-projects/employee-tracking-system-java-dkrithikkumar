@@ -1,5 +1,7 @@
 package com.airtribe.EmployeeTrackingSystem.entity;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.*;
 
 @Entity
@@ -10,15 +12,15 @@ public class Department {
     private Long departmentId;
     private String departmentTitle;
     private String departmentDescription;
-    private Long departmentBudget;
-    @OneToMany(mappedBy = "department")
+    private BigDecimal departmentBudget;
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<Employee> employees;
-    @OneToMany(mappedBy = "department")
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL)
     private List<Project> projects;
 
     public Department() {};
 
-    public Department(Long departmentId, String departmentTitle, String departmentDescription, Long departmentBudget, List<Employee> employees, List<Project> projects) {
+    public Department(Long departmentId, String departmentTitle, String departmentDescription, BigDecimal departmentBudget, List<Employee> employees, List<Project> projects) {
         this.departmentId = departmentId;
         this.departmentTitle = departmentTitle;
         this.departmentDescription = departmentDescription;
@@ -51,11 +53,11 @@ public class Department {
         this.departmentDescription = departmentDescription;
     }
 
-    public Long getDepartmentBudget() {
+    public BigDecimal getDepartmentBudget() {
         return departmentBudget;
     }
 
-    public void setDepartmentBudget(Long departmentBudget) {
+    public void setDepartmentBudget(BigDecimal departmentBudget) {
         this.departmentBudget = departmentBudget;
     }
 

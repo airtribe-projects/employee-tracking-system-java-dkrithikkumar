@@ -1,23 +1,29 @@
-package com.airtribe.EmployeeTrackingSystem.dto;
+package com.airtribe.EmployeeTrackingSystem.model.dto;
 
 
+import com.airtribe.EmployeeTrackingSystem.utils.CreateValidation;
+import com.airtribe.EmployeeTrackingSystem.utils.NullableNotBlankDateFormat;
+import com.airtribe.EmployeeTrackingSystem.utils.UpdateValidation;
 import com.airtribe.EmployeeTrackingSystem.utils.ValidDateFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.*;
 
 public class EmployeeDTO {
-    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
-    @NotBlank(message = "Name should not be empty")
+    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters", groups = CreateValidation.class)
+    @NotBlank(message = "Name should not be empty", groups = CreateValidation.class)
     private String fullName;
-    @Email(message = "Invalid email format")
-    @NotBlank(message = "Email should not be empty")
+
+    @Email(message = "Invalid email format", groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank(message = "Email should not be empty", groups = CreateValidation.class)
     private String email;
-    @Pattern(regexp = "^[0-9]{10}$", message = "Phone Number must only be 10 digits")
-    @NotBlank(message = "Phone Number should not be empty")
+
+    @Pattern(regexp = "^[0-9]{10}$", message = "Phone Number must only be 10 digits", groups = {CreateValidation.class, UpdateValidation.class})
+    @NotBlank(message = "Phone Number should not be empty", groups = CreateValidation.class)
     private String phoneNumber;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @NotNull(message = "Joining Date should not be empty")
-    @ValidDateFormat
+    @NotNull(message = "Joining Date should not be empty", groups = CreateValidation.class)
+    @ValidDateFormat(groups = CreateValidation.class)
     private String dateOfJoining;
 
     public EmployeeDTO(String fullName, String email, String phoneNumber, String dateOfJoining) {

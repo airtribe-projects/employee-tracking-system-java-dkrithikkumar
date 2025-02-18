@@ -1,6 +1,8 @@
 package com.airtribe.EmployeeTrackingSystem.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,36 +14,20 @@ public class Project {
     private Long projectId;
     private String projectTitle;
     private String projectDescription;
-    private Long projectBudget;
+    private BigDecimal projectBudget;
     private LocalDate startDate;
     private LocalDate endDate;
-    @JsonProperty("isProjectActive")
-    private boolean isProjectActive;
     @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
-    @ManyToMany(mappedBy = "projects")
-    private List<Employee> employees;
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    private List<EmployeeProject> employees;
 
     public Project() {}
 
-    public Project(Long projectId, String projectTitle, String projectDescription, Long projectBudget, LocalDate startDate, LocalDate endDate, boolean isProjectActive, Department department, List<Employee> employees) {
-        this.projectId = projectId;
-        this.projectTitle = projectTitle;
-        this.projectDescription = projectDescription;
-        this.projectBudget = projectBudget;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.isProjectActive = isProjectActive;
-        this.department = department;
-        this.employees = employees;
-    }
 
     public Long getProjectId() {
         return projectId;
-    }
-
-    public void setProjectId(Long projectId) {
-        this.projectId = projectId;
     }
 
     public String getProjectTitle() {
@@ -60,11 +46,11 @@ public class Project {
         this.projectDescription = projectDescription;
     }
 
-    public Long getProjectBudget() {
+    public BigDecimal getProjectBudget() {
         return projectBudget;
     }
 
-    public void setProjectBudget(Long projectBudget) {
+    public void setProjectBudget(BigDecimal projectBudget) {
         this.projectBudget = projectBudget;
     }
 
@@ -84,14 +70,6 @@ public class Project {
         this.endDate = endDate;
     }
 
-    public boolean isProjectActive() {
-        return isProjectActive;
-    }
-
-    public void setProjectActive(boolean projectActive) {
-        isProjectActive = projectActive;
-    }
-
     public Department getDepartment() {
         return department;
     }
@@ -100,11 +78,11 @@ public class Project {
         this.department = department;
     }
 
-    public List<Employee> getEmployees() {
+    public List<EmployeeProject> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
+    public void setEmployees(List<EmployeeProject> employees) {
         this.employees = employees;
     }
 }

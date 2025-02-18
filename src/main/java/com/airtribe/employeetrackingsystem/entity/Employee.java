@@ -27,10 +27,10 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
-    @ManyToMany
-    private List<Project> projects;
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<EmployeeProject> projects;
 
-    public Employee(Long employeeId, String fullName, String email, String phoneNumber, Roles role, LocalDate dateOfJoining, Department department, List<Project> projects) {
+    public Employee(Long employeeId, String fullName, String email, String phoneNumber, Roles role, LocalDate dateOfJoining, Department department, List<EmployeeProject> projects) {
         this.employeeId = employeeId;
         this.fullName = fullName;
         this.email = email;
@@ -42,6 +42,12 @@ public class Employee {
     }
 
     public Employee() {}
+
+    private static String standardizeName(String name) {
+        if (name == null) return null;
+        return name.trim().replaceAll("\\s+", " ").toLowerCase();
+    }
+
 
     public Long getEmployeeId() {
         return employeeId;
@@ -56,7 +62,7 @@ public class Employee {
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName = standardizeName(fullName);
     }
 
     public String getEmail() {
@@ -99,11 +105,11 @@ public class Employee {
         this.department = department;
     }
 
-    public List<Project> getProjects() {
+    public List<EmployeeProject> getProjects() {
         return projects;
     }
 
-    public void setProjects(List<Project> projects) {
+    public void setProjects(List<EmployeeProject> projects) {
         this.projects = projects;
     }
 }
